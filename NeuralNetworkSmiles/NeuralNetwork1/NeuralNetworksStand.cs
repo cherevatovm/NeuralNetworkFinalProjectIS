@@ -240,5 +240,16 @@ namespace NeuralNetwork1
                     generator.EmotionsCount)).ToString();
             }
         }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            if (Net == null) return;
+            Net.Save();
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            Net.Load();
+        }
     }
 }

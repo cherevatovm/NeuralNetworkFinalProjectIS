@@ -45,5 +45,10 @@ namespace NeuralNetwork1
                 weights[i] -= learningRate * error * prevLayerWeights[i].output;
             bias -= learningRate * error;
         }
+
+        public string Serialize()
+        {
+            return string.Join(":", weights.Select(w => w.ToString())) + ";" + bias.ToString();
+        }
     }
 }

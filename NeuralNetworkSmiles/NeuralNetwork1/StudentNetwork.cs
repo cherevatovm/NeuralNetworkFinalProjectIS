@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
 using Accord.Neuro;
+using System.IO;
 
 namespace NeuralNetwork1
 {
@@ -14,12 +15,19 @@ namespace NeuralNetwork1
     {
         Stopwatch watch = new Stopwatch();
         static Random rand = new Random();
+        int[] savedStruct;
 
         public static double learningRate = 0.1;
 
         List<Neuron[]> allLayers;
 
         public StudentNetwork(int[] structure)
+        {
+            savedStruct = structure;
+            Init(structure);
+        }
+
+        private void Init(int[] structure)
         {
             if (structure.Length < 2)
             {
@@ -122,14 +130,44 @@ namespace NeuralNetwork1
             return error;
         }
 
+        private string path = "../../network_data.txt";
+
         public override void Save()
         {
-            throw new NotImplementedException();
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                writer.WriteLine(string.Join(",", savedStruct.Select(i => i.ToString())));
+                foreach (var layer in allLayers.Skip(1))
+                {
+                    foreach (var neuron in layer)
+                    {
+                        writer.WriteLine(neuron.Serialize());
+                    }
+                }
+            }
         }
-        
+
         public override void Load()
         {
-            throw new NotImplementedException();
+            var lines = File.ReadAllLines(path);
+            int[] structure = lines[0].Split(',').Select(int.Parse).ToArray();
+            int lineIndex = 1;
+            Init(structure);
+            foreach (var layer in allLayers.Skip(1))
+            {
+                foreach (var neuron in layer)
+                {
+                    var data = lines[lineIndex].Split(';');
+                    var weightStrings = data[0].Split(':');
+
+                    for (int i = 0; i < weightStrings.Length; i++)
+                    {
+                        neuron.weights[i] = double.Parse(weightStrings[i]);
+                    }
+                    neuron.bias = double.Parse(data[1]);
+                    lineIndex++;
+                }
+            }
         }
     }
 }
