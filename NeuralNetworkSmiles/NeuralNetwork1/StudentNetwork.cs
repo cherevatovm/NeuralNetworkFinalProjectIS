@@ -130,7 +130,7 @@ namespace NeuralNetwork1
             return error;
         }
 
-        private string path = "../../network_data.txt";
+        private string path = "../../saved-network.txt";
 
         public override void Save()
         {

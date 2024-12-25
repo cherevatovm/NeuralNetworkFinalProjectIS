@@ -16,44 +16,24 @@ namespace AIMLTGBot
             this.network = network;
         }
 
-        public string Result(Bitmap img)
-        {
+        public string Result(Bitmap img) {
             double[] S = ImageEncoder.Flatten(img);
-            double[] res = network.Compute(S);
+            Sample sample = new Sample(S, 5);
+            sample.ProcessPrediction(network.Compute(sample.input));
 
-            int j = 0;
-            double max = 0;
-            for (int i = 0; i < res.Length; i++)
+            switch (sample.recognizedClass)
             {
-                if (res[i] > max)
-                {
-                    max = res[i];
-                    j = i;
-                }
-            }
-
-            string str = "";
-            switch (j)
-            {
-                case 0:
-                    str = "angry";
-                    break;
-                case 1:
-                    str = "happy";
-                    break;
-                case 2:
-                    str = "neutral";
-                    break;
-                case 3:
-                    str = "sad";
-                    break;
-                case 4:
-                    str = "surprised";
-                    break;
+                case FigureType.Angry:
+                    return "angry";
+                case FigureType.Happy:
+                    return "happy";
+                case FigureType.Neutral:
+                    return "neutral";
+                case FigureType.Sad:
+                    return "sad";
                 default:
-                    break;
+                    return "surprised";
             }
-            return str;
         }
     }
 }
