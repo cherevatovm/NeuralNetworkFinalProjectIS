@@ -168,35 +168,35 @@
 	
 	
   <category>
-    <pattern>Расскажи об образе happy</pattern>
+    <pattern>расскажи об образе happy</pattern>
     <template>
 	  <get name="user-name"/>, это <set name="emotion">счастье</set> - обычный счастливый смайлик.
 	</template>
   </category>
 
   <category>
-    <pattern>Расскажи об образе sad</pattern>
+    <pattern>расскажи об образе sad</pattern>
     <template>
       <get name="user-name"/>, это <set name="emotion">грусть</set> - грустный и обиженный смайлик.
     </template>
   </category>
 
   <category>
-    <pattern>Расскажи об образе neutral</pattern>
+    <pattern>расскажи об образе neutral</pattern>
     <template>
       <get name="user-name"/>, это <set name="emotion">нейтральность</set> - кажется ему не очень интересно...
     </template>
   </category>
 
   <category>
-    <pattern>Расскажи об образе surprised</pattern>
+    <pattern>расскажи об образе surprised</pattern>
     <template>
 	  <get name="user-name"/>, это <set name="emotion">удивление</set> - его что-то точно удивило!
 	</template>
   </category>
 	
   <category>
-    <pattern>Расскажи об образе angry</pattern>
+    <pattern>расскажи об образе angry</pattern>
     <template>
 	   <get name="user-name"/>, это <set name="emotion">злость</set> - что же его так разозлило...
 	</template>

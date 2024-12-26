@@ -25,32 +25,26 @@ namespace AIMLTGBot
 
         private static Bitmap ExtractBlob(Bitmap original)
         {
-            // Переводим в оттенки серого
             var grayFilter = new AForge.Imaging.Filters.Grayscale(0.2125, 0.7154, 0.0721);
             var unmanaged = grayFilter.Apply(AForge.Imaging.UnmanagedImage.FromManagedImage(original));
 
-            // Применяем пороговый фильтр
             var thresholdFilter = new AForge.Imaging.Filters.OtsuThreshold();
             thresholdFilter.ApplyInPlace(unmanaged);
 
-            // Инвертируем
             var invertFilter = new AForge.Imaging.Filters.Invert();
             invertFilter.ApplyInPlace(unmanaged);
 
-            // Создаём BlobCounter, вытаскиваем блобы
             var bc = new AForge.Imaging.BlobCounter();
 
             bc.FilterBlobs = true;
             bc.MinWidth = 5;
             bc.MinHeight = 5;
-            // Упорядочиваем по размеру
             bc.ObjectsOrder = AForge.Imaging.ObjectsOrder.Size;
 
             bc.ProcessImage(unmanaged);
 
             var rectangles = bc.GetObjectsRectangles();
 
-            // Находим выпуклую оболочку
             int lx = unmanaged.Width;
             int ly = unmanaged.Height;
             int rx = 0;
@@ -63,11 +57,9 @@ namespace AIMLTGBot
                 if (ry < rectangles[i].Y + rectangles[i].Height) ry = rectangles[i].Y + rectangles[i].Height;
             }
 
-            // Обрезаем края, оставляя только центральные блобчики
             var cropFilter = new AForge.Imaging.Filters.Crop(new Rectangle(lx, ly, rx - lx, ry - ly));
             unmanaged = cropFilter.Apply(unmanaged);
 
-            //  Масштабируем до 30x30
             var scaleFilter = new AForge.Imaging.Filters.ResizeBilinear(sampleX, sampleY);
             unmanaged = scaleFilter.Apply(unmanaged);
 
